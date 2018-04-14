@@ -23,7 +23,7 @@ public class Product {
 	private long id;
 	
 	@NotNull
-	@Column(unique = true)
+	@Column
 	private String barCodeId;
 
 	@NotNull
