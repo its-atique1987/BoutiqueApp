@@ -14,7 +14,6 @@ import com.example.online.store.MyBoutique.entity.Product;
 import com.example.online.store.MyBoutique.entity.repository.BillRepository;
 import com.example.online.store.MyBoutique.entity.repository.LineItemRepository;
 import com.example.online.store.MyBoutique.entity.repository.ProductRepository;
-import com.example.online.store.MyBoutique.product.model.BillDetail;
 import com.example.online.store.MyBoutique.util.ProductCategory;
 
 @Service
@@ -37,7 +36,7 @@ public class BillService {
 		
 		Bill bill = billRepository.save(new Bill(0.0, 0.0, 0));
 		
-		List<LineItem> savedItems = addProductToLineItem(bill);
+		List<LineItem> savedItems = addProductsToLineItem(bill);
 		bill.setLineItems(savedItems);
 		Bill bill2 = billRepository.save(bill);
 		return computeBillValue(bill2);
@@ -63,13 +62,18 @@ public class BillService {
 		return billRepository.save(bill);
 	}
 
-	private List<LineItem> addProductToLineItem(Bill bill) {
+	private List<LineItem> addProductsToLineItem(Bill bill) {
 		Iterable<Product> productsInCart = productRepository.findAll();
 		List<LineItem> lineItems = new ArrayList<>();
+		List<String> prodAddedToLineItem = new ArrayList<String>();
 		for (Product product : productsInCart) {
-			 long quantity = productRepository.countByName(product.getName());
-			 LineItem lineItem = createLineItems(quantity, product);
-			 lineItems.add(lineItem);
+			if(!prodAddedToLineItem.contains(product.getName())) {
+				long quantity = productRepository.countByName(product.getName());
+				 LineItem lineItem = createLineItems(quantity, product);
+				 lineItems.add(lineItem);
+				 prodAddedToLineItem.add(product.getName());
+			}
+			
 		}
 		lineItemRepository.saveAll(lineItems);
 		
