@@ -1,5 +1,7 @@
 package com.example.online.store.MyBoutique.product.model;
 
+import java.util.List;
+
 public class BillDetail {
 
 	private int noOfItems;
@@ -9,11 +11,15 @@ public class BillDetail {
 	private double total;
 
 	private double tax;
+	
+	private List<LineItemDetail> lineItemDetails;
+	
 
-	public BillDetail(double total, double subTotal, double tax) {
+	public BillDetail(double total, double subTotal, double tax, List<LineItemDetail> details) {
 		this.tax = tax;
 		this.total= total;
 		this.subTotal = subTotal;
+		this.lineItemDetails = details;
 	}
 
 	public int getNoOfItems() {
@@ -50,9 +56,30 @@ public class BillDetail {
 	
 	@Override
 	public String toString() {
-		return "BillDetail -- "
-				+ "Total Value = "+total+ " Sub Total = "+subTotal
-				+" Total Tax = "+tax;
+		StringBuilder builder= new StringBuilder();
+		builder.append(" Name   Quantity   Rate   Total");
+		builder.append(System.getProperty("line.separator"));
+		builder.append("----------------------------------");
+		for (LineItemDetail item : lineItemDetails) {
+			String itemInfo = item.getProductName() 
+					+ " "
+					+ item.getQuantity()
+					+ " "
+					+ item.getProductRate()
+					+" "
+					+item.getTotalValue();
+			builder.append(itemInfo);
+			builder.append(System.getProperty("line.separator"));
+		}
+		builder.append("----------------------------------");
+		builder.append(System.getProperty("line.separator"));
+		builder.append("Total Value = "+total);
+		builder.append(System.getProperty("line.separator"));
+		builder.append("Sub Total = "+subTotal);
+		builder.append(System.getProperty("line.separator"));
+		builder.append("Total tax = "+tax);
+		
+		return builder.toString();
 	}
 	
 }
