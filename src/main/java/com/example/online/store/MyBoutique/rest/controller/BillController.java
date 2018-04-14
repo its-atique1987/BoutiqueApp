@@ -22,11 +22,11 @@ public class BillController {
 	BillService billService;
 	
 	@RequestMapping(value = "/bills", method = RequestMethod.GET)
-	public BillDetail createBill() {
+	public String createBill() {
 		
 		Bill bill = billService.createBill();
 		
-		return mapBillToBillDetail(bill);
+		return mapBillToBillDetail(bill).toString();
 	}
 
 	private BillDetail mapBillToBillDetail(Bill bill) {
