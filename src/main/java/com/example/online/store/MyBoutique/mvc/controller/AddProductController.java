@@ -21,7 +21,7 @@ public class AddProductController {
 	private static String URL = "http://localhost:8080/rest/product";
 	@PostMapping(params="categoryA")
 	public String addProductA(@ModelAttribute("model") ProductCategories categories, Model model) {
-		createProduct(categories.getCategoryAproducts());
+		createProduct(categories.getCategoryAproducts(), ProductCategory.A);
 
 		model.addAttribute("productsA", getCategoryAProducts());
 		model.addAttribute("productsB", getCategoryBProducts());
@@ -33,7 +33,7 @@ public class AddProductController {
 
 	@PostMapping(params="categoryB")
 	public String addProductB(@ModelAttribute("model") ProductCategories categories, Model model) {
-		createProduct(categories.getCategoryBproducts());
+		createProduct(categories.getCategoryBproducts(), ProductCategory.B);
 		
 		model.addAttribute("productsA", getCategoryAProducts());
 		model.addAttribute("productsB", getCategoryBProducts());
@@ -45,7 +45,7 @@ public class AddProductController {
 	
 	@PostMapping(params="categoryC")
 	public String addProductC(@ModelAttribute("model") ProductCategories categories, Model model) {
-		createProduct(categories.getCategoryCproducts());
+		createProduct(categories.getCategoryCproducts(), ProductCategory.C);
 
 		model.addAttribute("productsA", getCategoryAProducts());
 		model.addAttribute("productsB", getCategoryBProducts());
@@ -55,9 +55,9 @@ public class AddProductController {
 		
 	}
 	
-	private void createProduct(List<String> categories) {
+	private void createProduct(List<String> categories, ProductCategory category) {
 		for (String productName : categories) {
-			ProductDetail productDetail = new ProductDetail(productName, "A-product-001"+Math.random(), 20, ProductCategory.A);
+			ProductDetail productDetail = new ProductDetail(productName, "A-product-001"+Math.random(), 20, category);
 			RestTemplate restTemplate = new RestTemplate();
 			String productInfo = restTemplate.postForObject(URL, productDetail, String.class);
 			System.out.println(productInfo);
