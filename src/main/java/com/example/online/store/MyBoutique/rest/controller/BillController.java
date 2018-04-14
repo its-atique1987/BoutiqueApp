@@ -25,9 +25,9 @@ public class BillController {
 	}
 
 	private BillDetail mapBillToBillDetail(Bill bill) {
-		double total = bill.getTotalValue();
-		double subTotal = bill.getTotalCost();
-		double tax = bill.getTotalTax();
+		double total = bill.getTotal();
+		double subTotal = bill.getSubTotal();
+		double tax = bill.getTax();
 		
 		BillDetail billDetail = new BillDetail(total, subTotal, tax);
 		System.out.println(billDetail.toString());
