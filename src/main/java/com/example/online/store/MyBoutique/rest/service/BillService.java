@@ -37,13 +37,13 @@ public class BillService {
 		
 		Bill bill = billRepository.save(new Bill(0.0, 0.0, 0));
 		
-		List<LineItem> savedItems = addProductToBill(bill);
+		List<LineItem> savedItems = addProductToLineItem(bill);
 		bill.setLineItems(savedItems);
 		Bill bill2 = billRepository.save(bill);
-		return computeTotalValues(bill2);
+		return computeBillValue(bill2);
 	}
 
-	private Bill computeTotalValues(Bill bill) {
+	private Bill computeBillValue(Bill bill) {
 
 		double total = 0;
 		double subtotal = 0;
@@ -63,7 +63,7 @@ public class BillService {
 		return billRepository.save(bill);
 	}
 
-	private List<LineItem> addProductToBill(Bill bill) {
+	private List<LineItem> addProductToLineItem(Bill bill) {
 		Iterable<Product> productsInCart = productRepository.findAll();
 		List<LineItem> lineItems = new ArrayList<>();
 		for (Product product : productsInCart) {
@@ -78,11 +78,11 @@ public class BillService {
 	}
 
 	public LineItem  createLineItems(long quantity, Product product) {
-		double totalSaleValue = computeTotalSaleValueForItem(quantity, product);
+		double totalSaleValue = computeSaleValueForItem(quantity, product);
 		 return new LineItem(product, quantity, totalSaleValue);
 	}
 
-	private double computeTotalSaleValueForItem(long quantity, Product product) {
+	private double computeSaleValueForItem(long quantity, Product product) {
 		double totalSaleValue = 0;
 		if (ProductCategory.A == product.getProductCategory()) {
 			totalSaleValue = quantity * product.getRate() * 1.1;
